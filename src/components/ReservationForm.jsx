@@ -267,26 +267,26 @@ export default function ReservationForm() {
                             {/* Row 3 */}
                             <div className="items-center justify-center">
                                 <div className="flex items-center gap-2 justify-center min-w-[190px] ">
-                                    <div className="flex items-center gap-2 justify-items-center">
+                                    <div className="grid grid-rows-2 items-center gap-2 justify-items-center">
                                         <label className="whitespace-nowrap">جمع کل:</label>
                                         {maybeInput(reservationBill, setReservationBill)}
                                     </div>
                                 </div>
                             </div>
                             <div className=" items-center justify-center">
-                                <div className="flex items-center gap-2 ">
+                                <div className="grid grid-rows-2 items-center gap-2 ">
                                     <label className="whitespace-nowrap">پرداختی مهمان:</label>
                                     {maybeInput(guestPayment, setGuestPayment)}
                                 </div>
                             </div>
                             <div className=" items-center justify-center">
-                                <div className="flex items-center gap-2 justify-items-center">
+                                <div className="grid grid-rows-2 items-center gap-2 justify-items-center">
                                     <label className="whitespace-nowrap">باقی مانده:</label>
                                     {maybeInput(remaining, setRemaining)}
                                 </div>
                             </div>
                             <div className="items-center justify-center">
-                                <div className="flex items-center gap-2 justify-items-center">
+                                <div className="grid grid-rows-2 items-center gap-2 justify-items-center">
                                     <label className="whitespace-nowrap">کد پیگیری:</label>
                                     {maybeInput(reservationCode, setReservationCode)}
                                 </div>
