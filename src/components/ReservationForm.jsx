@@ -357,7 +357,7 @@ export default function ReservationForm() {
                                </div>
                               <div className="items-center justify-self-end border-2 border-b-blue-950 rounded-xl w-32">
                                   <div className=" grid grid-rows-2 gap-1 justify-items-center text-center">
-                                      <label className="whitespace-nowrap">مسئول رزرو:</label>
+                                      <label className="whitespace-nowrap text-center">مسئول رزرو:</label>
                                       {maybeInput(reservationAgent, setReservationAgent)}
                                   </div>
                               </div>
