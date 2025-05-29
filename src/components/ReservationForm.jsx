@@ -6,10 +6,10 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import Hami from "../images/Hami-logo.jpg";
-import telegram from "../images/telegram.svg";
+{/*import telegram from "../images/telegram.svg";
 import instagram from "../images/instagram.svg";
 import eitaa from "../images/Eitaa-Logo.svg";
-import call from "../images/call.svg";
+import call from "../images/call.svg";*/}
 
 export default function ReservationForm() {
     const formRef = useRef();
