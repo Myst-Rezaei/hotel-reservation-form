@@ -64,8 +64,21 @@
   .w-32 {
     width: 100px !important;
   }
+  .agentbtn {
+    justify-self: center;
+  }
 }
+@media print {
+  body {
+    background: white !important;
+  }
 
+  .export-container {
+    width: 800px !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+  }
+}
 
 
 

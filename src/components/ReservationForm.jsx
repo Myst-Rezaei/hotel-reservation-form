@@ -143,8 +143,8 @@ export default function ReservationForm() {
 
                 <div
                     ref={formRef}
-                    className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-2xl border border-gray-300"
-                >
+                    className="bg-white p-8 rounded-lg shadow-md mx-auto text-black"
+                    style={{ width: "800px" }} >
                     <div className="grid grid-cols-3 gap-4 text-center con1">
 
                         <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center">
@@ -355,7 +355,7 @@ export default function ReservationForm() {
                                       بانک مهر ایران ، بنام حسام مقبل
                                   </p>
                                </div>
-                              <div className="items-center justify-self-end border-2 border-b-blue-950 rounded-xl w-32">
+                              <div className="items-center justify-self-end border-2 border-b-blue-950 rounded-xl w-32 agentbtn">
                                   <div className=" grid grid-rows-2 gap-1 justify-items-center text-center">
                                       <label className="whitespace-nowrap text-center">مسئول رزرو:</label>
                                       {maybeInput(reservationAgent, setReservationAgent)}
