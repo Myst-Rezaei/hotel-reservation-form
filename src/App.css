@@ -1,38 +1,84 @@
+@import url("https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: "Vazir";
+}
+
+
+
+body {
+  font-family: Vazir;
+
+}
+
+/* src/App.css */
+.input {
+  text-align: center;
+  border: 1px solid #d1d5db;
+  /*padding: 0.5rem;*/
+  border-radius: 0.5rem;
+  /*height: 40px;*/
+  /*width: 200px;*/
+}
+.hami-logo img {
+  margin-top: 30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+}
+.con1 input {
+  width: 200px;
+  height: 40px;
+}
+.con2 input {
+  width: 100px;
+  height: 40px;
+}
+
+.con3 input {
+  width: 150px;
+
+}
+.con4 input {
+  height: 150px;
+  width: 500px;
+  padding: 8px 12px;
+}
+.con5 input {
+  width: 70px;
+}
+
+.custom-datepicker-h input {
+  height: 40px;
+  width: 153px;
+  padding: 8px 12px;
+  font-size: 1rem;
+
+}
+.custom-datepicker-m input {
+  height: 40px;
+  width: 151.5px;
+  padding: 8px 12px;
+  font-size: 1rem;
+
+}
+
+.con2-datepicker-1 input, .con2-datepicker-2 input {
+  padding: 8px 12px;
+  height: 40px;
+  font-size: 14px;
+}
+.h-title, .g-title {
+  margin-bottom: -20px;
+}
+
+
+.container {
+  max-width: 800px;
+}
+
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

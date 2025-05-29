@@ -1,0 +1,1256 @@
+Index: src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/App.js b/src/App.js
+--- a/src/App.js	
++++ b/src/App.js	(date 1748451001398)
+@@ -1,15 +1,10 @@
+-import logo from './logo.svg';
+-import React from "react";
++
++import './App.css';
+ import ReservationForm from "./components/ReservationForm";
+-import "./App.css";
+-
+ 
+ function App() {
+   return (
+-      <div className="min-h-screen bg-gray-100 p-4">
+-        <ReservationForm />
+-      </div>
+-
++    <ReservationForm/>
+   );
+ }
+ 
+Index: src/App.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/App.css b/src/App.css
+--- a/src/App.css	
++++ b/src/App.css	(date 1748450306812)
+@@ -1,83 +1,38 @@
+-@import url("https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap");
+-@tailwind base;
+-@tailwind components;
+-@tailwind utilities;
+-@font-face {
+-  font-family: "Vazir";
+-}
+-
+-
+-
+-body {
+-  font-family: Vazir;
+-
+-}
+-
+-/* src/App.css */
+-.input {
+-  text-align: center;
+-  border: 1px solid #d1d5db;
+-  /*padding: 0.5rem;*/
+-  border-radius: 0.5rem;
+-  /*height: 40px;*/
+-  /*width: 200px;*/
+-}
+-.hami-logo img {
+-  margin-top: 30px;
+-  width: 100px;
+-  height: 100px;
+-  border-radius: 15px;
+-}
+-.con1 input {
+-  width: 200px;
+-  height: 40px;
+-}
+-.con2 input {
+-  width: 100px;
+-  height: 40px;
+-}
+-.con3 input {
+-  width: 150px;
+-
+-}
+-.con4 input {
+-  height: 150px;
+-  width: 500px;
+-  padding: 8px 12px;
+-}
+-
+-
+-.custom-datepicker-h input {
+-  height: 40px;
+-  width: 153px;
+-  padding: 8px 12px;
+-  font-size: 1rem;
+-
+-}
+-.custom-datepicker-m input {
+-  height: 40px;
+-  width: 151.5px;
+-  padding: 8px 12px;
+-  font-size: 1rem;
+-
+-}
+-
+-.con2-datepicker-1 input, .con2-datepicker-2 input {
+-  padding: 8px 12px;
+-  height: 40px;
+-  font-size: 14px;
+-}
+-.h-title, .g-title {
+-  margin-bottom: -20px;
+-}
+-
+-
+-.container {
+-  max-width: 800px;
+-}
+-
+ .App {
+   text-align: center;
+ }
+ 
++.App-logo {
++  height: 40vmin;
++  pointer-events: none;
++}
++
++@media (prefers-reduced-motion: no-preference) {
++  .App-logo {
++    animation: App-logo-spin infinite 20s linear;
++  }
++}
+ 
++.App-header {
++  background-color: #282c34;
++  min-height: 100vh;
++  display: flex;
++  flex-direction: column;
++  align-items: center;
++  justify-content: center;
++  font-size: calc(10px + 2vmin);
++  color: white;
++}
++
++.App-link {
++  color: #61dafb;
++}
++
++@keyframes App-logo-spin {
++  from {
++    transform: rotate(0deg);
++  }
++  to {
++    transform: rotate(360deg);
++  }
++}
+Index: src/components/ReservationForm.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/ReservationForm.jsx b/src/components/ReservationForm.jsx
+--- a/src/components/ReservationForm.jsx	
++++ b/src/components/ReservationForm.jsx	(date 1748451001388)
+@@ -1,4 +1,4 @@
+-import React, { useRef } from "react";
++import React, { useRef, useState } from "react";
+ import DatePicker from "react-multi-date-picker";
+ import persian from "react-date-object/calendars/persian";
+ import persian_fa from "react-date-object/locales/persian_fa";
+@@ -9,67 +9,91 @@
+ export default function ReservationForm() {
+     const formRef = useRef();
+ 
+-    const handleExportAsImage = async () => {
++    const [guestName1, setGuestName1] = useState("");
++    const [guestName2, setGuestName2] = useState("");
++    const [hotelName1, setHotelName1] = useState("");
++    const [hotelName2, setHotelName2] = useState("");
++    const [birthDate, setBirthDate] = useState(null);
++    const [reservationDate, setReservationDate] = useState(null);
++    const [exporting, setExporting] = useState(false);
++
++    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
++
++    const handleExport = async (type = "image") => {
++        setExporting(true);
++        await delay(100);
++
+         const element = formRef.current;
+         if (!element) return;
+ 
+-        // Ensure styles are fully loaded before capturing
+-        await new Promise((resolve) => setTimeout(resolve, 100));
+-
+         const canvas = await html2canvas(element, {
+-            scale: 2, // higher resolution
++            scale: 2,
+             useCORS: true,
+             allowTaint: true,
+-            logging: true,
+-            backgroundColor: null, // preserve transparency
++            backgroundColor: type === "pdf" ? "#ffffff" : null,
+             scrollX: 0,
+             scrollY: -window.scrollY,
+         });
+ 
+         const image = canvas.toDataURL("image/png");
+-        const link = document.createElement("a");
+-        link.href = image;
+-        link.download = "reservation-form.png";
+-        link.click();
+-    };
+-
+-    const handleExportAsPDF = async () => {
+-        const element = formRef.current;
+-        if (!element) return;
+-
+-        await new Promise((resolve) => setTimeout(resolve, 100));
+-
+-        const canvas = await html2canvas(element, {
+-            scale: 2,
+-            useCORS: true,
+-            allowTaint: true,
+-            backgroundColor: "#ffffff",
+-            scrollX: 0,
+-            scrollY: -window.scrollY,
+-        });
+-
+-        const imageData = canvas.toDataURL("image/png");
+-        const pdf = new jsPDF("p", "mm", "a4");
+-        const imgProps = pdf.getImageProperties(imageData);
+-
+-        const pdfWidth = pdf.internal.pageSize.getWidth();
+-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+-
+-        pdf.addImage(imageData, "PNG", 0, 0, pdfWidth, pdfHeight);
+-        pdf.save("reservation-form.pdf");
++
++        if (type === "image") {
++            const link = document.createElement("a");
++            link.href = image;
++            link.download = "reservation-form.png";
++            link.click();
++        } else {
++            const pdf = new jsPDF("p", "mm", "a4");
++            const imgProps = pdf.getImageProperties(image);
++            const pdfWidth = pdf.internal.pageSize.getWidth();
++            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
++            pdf.addImage(image, "PNG", 0, 0, pdfWidth, pdfHeight);
++            pdf.save("reservation-form.pdf");
++        }
++
++        setExporting(false);
+     };
++
++    const inputStyle = "border-b border-dotted border-gray-400 focus:outline-none w-full text-right px-1";
++
++    const maybeInput = (value, setValue) =>
++        exporting ? (
++            <div className={inputStyle}>{value || "ـــــــ"}</div>
++        ) : (
++            <input
++                type="text"
++                value={value}
++                onChange={(e) => setValue(e.target.value)}
++                className={inputStyle}
++                placeholder="ـــــــ"
++            />
++        );
++
++    const maybeDate = (date, setDate) =>
++        exporting ? (
++            <div className="mt-1 inline-block p-2">{date?.format?.("YYYY/MM/DD") || "ـــــــ"}</div>
++        ) : (
++            <DatePicker
++                calendar={persian}
++                locale={persian_fa}
++                value={date}
++                onChange={setDate}
++                className="mt-1 inline-block p-2"
++            />
++        );
++
+     return (
+         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+             <div className="w-full max-w-4xl">
+                 <div className="flex justify-center gap-4 mb-4">
+                     <button
+-                        onClick={handleExportAsImage}
++                        onClick={() => handleExport("image")}
+                         className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600"
+                     >
+                         ذخیره به صورت تصویر
+                     </button>
+                     <button
+-                        onClick={handleExportAsPDF}
++                        onClick={() => handleExport("pdf")}
+                         className="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600"
+                     >
+                         ذخیره به صورت PDF
+@@ -80,171 +104,40 @@
+                     ref={formRef}
+                     className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-2xl border border-gray-300"
+                 >
+-
+-
+-                <div className="grid grid-cols-3 gap-4 text-right con1">
+-
+-                    <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center ">
+-                        <span className="text-center text-lg font-bold g-title"><label>مهمان</label></span>
+-                        <input type="text" className="input h-10" placeholder="ـــــــ" />
+-                        <input type="text" className="input h-10" placeholder="ـــــــ" />
+-                        <div className="flex items-center gap-2">
+-                            <span>متولد:</span>
+-                            <span className="custom-datepicker-m justify-items-center">
+-                            <DatePicker calendar={persian} locale={persian_fa} className="mt-1 inline-block p-2" />
+-                            </span>
+-                        </div>
+-                    </div>
+-                    <div className="justify-items-center mb-6">
+-                        <div className="hami-logo">
+-                            <img src={Hami} alt="logo" />
+-                        </div>
+-                        <div className="text-xl font-bold mt-4">«تاییدیه رزرو»</div>
+-                    </div>
+-                    <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center">
+-                        <label className="text-center text-lg font-bold h-title" >هتل</label>
+-                        <input type="text" className="input" placeholder="........." />
+-                        <input type="text" className="input" placeholder="........." />
+-                        <div className="flex items-center gap-2">
+-                            <span>تاریخ:</span>
+-                            <span className="custom-datepicker-h justify-items-center">
+-                            <DatePicker calendar={persian} locale={persian_fa} className="mt-1 inline-block p-2" />
+-                            </span>
+-                        </div>
+-                    </div>
+-
+-                </div>
+-
+-                <div className="border-t border-b border-gray-300 py-4 text-right">
+-                    <div className="grid grid-cols-[230px_230px_230px] gap-2 text-sm text-right items-center con2">
+-                        {/* Row 1 */}
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                              <div className="flex items-center gap-2 ">
+-                                <label className="whitespace-nowrap">ورود:</label>
+-                                  <span className="con2-datepicker-1">
+-                                <DatePicker calendar={persian} locale={persian_fa} className=" p-2 w-full" />
+-                                </span>
+-                              </div>
+-                              <div className="flex items-center gap-2 mr-1.5">
+-                                <label className="whitespace-nowrap">روز:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" placeholder="........."/>
+-                              </div>
+-                        </div>
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                            <div className="flex items-center gap-2">
+-                                <label className="whitespace-nowrap">خروج:</label>
+-                                <span className="con2-datepicker-2">
+-                                <DatePicker calendar={persian} locale={persian_fa} className=" p-2 w-full" />
+-                                </span>
+-                            </div>
+-                            <div className="flex items-center gap-2 mr-3.5">
+-                                <label className="whitespace-nowrap">روز:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                          <div className="flex items-center gap-2 justify-items-center">
+-                            <label className="whitespace-nowrap">مدت اقامت:</label>
+-                            <input type="text" className="input h-10 p-2 w-full" />
+-                          </div>
+-                          <div className="flex items-center gap-2 justify-items-center mr-2">
+-                            <label className="whitespace-nowrap">نوع اقامت: </label>
+-                            <input type="text" className="input h-10 p-2 w-full" />
+-                          </div>
+-                        </div>
+-                    </div>
+-                </div>
+-                <div className=" border-b border-gray-300 py-4 text-right">
+-                    <div className="grid grid-cols-[230px_230px_230px] gap-2 text-sm text-right items-center con2">
+-                        {/* Row 1 */}
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                            <div className="flex items-center gap-2 ">
+-                                <div>
+-                                    <label>نفرات بزرگسال:</label>
+-                                    <input type="number" className="input mr-1" />
+-                                </div>
+-                            </div>
+-                            <div className="flex items-center gap-2 mr-3">
+-                                <div>
+-                                  <label>نفرات کودک:</label>
+-                                 <input type="number" className="input mr-1" />
+-                                </div>
+-                            </div>
+-                        </div>
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                            <div className="flex items-center gap-2">
+-                                <label className="whitespace-nowrap">وعده غذایی اول:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                            <div className="flex items-center gap-2 ">
+-                                <label className="whitespace-nowrap">وعده غذایی دوم:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                        <div className="grid grid-rows-2 gap-1 justify-items-center border-l border-r border-gray-300">
+-                            <div className="flex items-center gap-2 justify-items-center">
+-                                <label className="whitespace-nowrap">نوع اتاق:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                            <div className="flex items-center gap-2 justify-items-center mr-6">
+-                                <label className="whitespace-nowrap">نرخ: </label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                <div className=" border-b border-gray-300 py-4 text-right">
+-                    <div className="grid grid-cols-[175px_175px_175px_175px] gap-2 text-sm text-right items-center con3">
+-                        {/* Row 1 */}
+-                        <div className=" justify-items-center border-l border-r border-gray-300">
+-
+-                            <div className="grid grid-rows-[30px_40px] gap-1 justify-items-center">
+-                                <label className="whitespace-nowrap mb-1">جمع کل:</label>
+-                                <input type="text" className="input h-10 p-2 w-full " />
+-                            </div>
+-                        </div>
+-                        <div className=" justify-items-center border-l border-r border-gray-300">
+-
+-                            <div className="grid grid-rows-[30px_40px] gap-1 justify-items-center">
+-                                <label className="whitespace-nowrap mb-1">پرداختی مهمان:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                        <div className=" justify-items-center border-l border-r border-gray-300">
+-                            <div className="grid grid-rows-[30px_40px] gap-1 justify-items-center">
+-                                <label className="whitespace-nowrap mb-1">باقیمانده:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                        <div className=" justify-items-center border-l border-r border-gray-300">
+-                            <div className="grid grid-rows-[30px_40px] gap-1 justify-items-center">
+-                                <label className="whitespace-nowrap mb-1">کد پیگیری:</label>
+-                                <input type="text" className="input h-10 p-2 w-full" />
+-                            </div>
+-                        </div>
+-                    </div>
+-                </div>
+-
+-                <div className="mt-4 grid grid-rows-[20px_40px] gap-1 con4">
+-                    <label>توضیحات:</label>
+-                    <textarea className="input" rows="3" />
+-                </div>
+-
+-                <div className="text-xs mt-6 text-gray-600 leading-relaxed border-t pt-4 text-right">
+-                    <p>۱. طبق قوانین هتل اقامت افراد زیر ۱۸ سال به تنهایی در محل ممنوع است.</p>
+-                    <p>۲. انجام امور و وظایف هنگام ورود به هتل و بر اساس موجودی توسط هتل تعیین میشود.</p>
+-                    <p>۳. تحویل اتاق ساعت ۱۴ و تخلیه اتاق حداکثر تا ظهر می‌باشد.</p>
+-                    <p>۴. ارائه کارت ملی یا مدرک شناسایی الزامی است. مدارک شناسایی غیر معتبر برای مسافران خارجی الزامی می‌باشد.</p>
+-                    <p>۵. رزرو قطعی تنها با ثبت اطلاعات در این فرم انجام می‌شود.</p>
+-                </div>
+-
+-                <div className="mt-6 flex justify-between items-center text-xs">
+-                    <div>مسئول رزرو: حسام مقابل</div>
+-                    <div>HAMI HOTEL | تماس: ۰۶۳۲۳-۷۳۱۳۱-۰۶۳۲۳</div>
+-                </div>
+-            </div>
+-          </div>
+-        </div>
+-      );
+-};
+\ No newline at end of file
++                    <div className="grid grid-cols-3 gap-4 text-right con1">
++                        <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center">
++                            <span className="text-center text-lg font-bold g-title"><label>مهمان</label></span>
++                            {maybeInput(guestName1, setGuestName1)}
++                            {maybeInput(guestName2, setGuestName2)}
++                            <div className="flex items-center gap-2">
++                                <span>متولد:</span>
++                                <span className="custom-datepicker-m justify-items-center">
++                                    {maybeDate(birthDate, setBirthDate)}
++                                </span>
++                            </div>
++                        </div>
++
++                        <div className="justify-items-center mb-6">
++                            <div className="hami-logo">
++                                <img src={Hami} alt="logo" />
++                            </div>
++                            <div className="text-xl font-bold mt-4">«تاییدیه رزرو»</div>
++                        </div>
++
++                        <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center">
++                            <label className="text-center text-lg font-bold h-title">هتل</label>
++                            {maybeInput(hotelName1, setHotelName1)}
++                            {maybeInput(hotelName2, setHotelName2)}
++                            <div className="flex items-center gap-2">
++                                <span>تاریخ:</span>
++                                <span className="custom-datepicker-h justify-items-center">
++                                    {maybeDate(reservationDate, setReservationDate)}
++                                </span>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++            </div>
++        </div>
++    );
++};
+Index: .idea/shelf/Changes.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/shelf/Changes.xml b/.idea/shelf/Changes.xml
+new file mode 100644
+--- /dev/null	(date 1748450395338)
++++ b/.idea/shelf/Changes.xml	(date 1748450395338)
+@@ -0,0 +1,10 @@
++<changelist name="Changes" date="1748450306174" recycled="false">
++  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Changes/shelved.patch" />
++  <option name="DESCRIPTION" value="Changes" />
++  <binary>
++    <option name="BEFORE_PATH" value="public/logo192.png" />
++  </binary>
++  <binary>
++    <option name="BEFORE_PATH" value="public/logo512.png" />
++  </binary>
++</changelist>
+\ No newline at end of file
+Index: public/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/public/index.html b/public/index.html
+--- a/public/index.html	
++++ b/public/index.html	(date 1748450306803)
+@@ -1,5 +1,5 @@
+ <!DOCTYPE html>
+-<html lang="fa" dir="rtl">
++<html lang="en">
+   <head>
+     <meta charset="utf-8" />
+     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+Index: server/index.js
+===================================================================
+diff --git a/server/index.js b/server/index.js
+deleted file mode 100644
+--- a/server/index.js	
++++ /dev/null	
+@@ -1,31 +0,0 @@
+-const express = require("express");
+-const puppeteer = require("puppeteer");
+-const cors = require("cors");
+-
+-const app = express();
+-app.use(cors());
+-
+-app.get("/export", async (req, res) => {
+-    const { url, type = "pdf" } = req.query;
+-
+-    if (!url) return res.status(400).send("Missing URL");
+-
+-    const browser = await puppeteer.launch();
+-    const page = await browser.newPage();
+-    await page.goto(url, { waitUntil: "networkidle0" });
+-
+-    if (type === "image") {
+-        const screenshot = await page.screenshot({ fullPage: true });
+-        res.setHeader("Content-Type", "image/png");
+-        res.send(screenshot);
+-    } else {
+-        const pdf = await page.pdf({ format: "A4" });
+-        res.setHeader("Content-Type", "application/pdf");
+-        res.send(pdf);
+-    }
+-
+-    await browser.close();
+-});
+-
+-const PORT = 4000;
+-app.listen(PORT, () => console.log(`Puppeteer server listening on http://localhost:${PORT}`));
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package.json b/package.json
+--- a/package.json	
++++ b/package.json	(date 1748450306784)
+@@ -7,11 +7,8 @@
+     "@testing-library/jest-dom": "^6.6.3",
+     "@testing-library/react": "^16.3.0",
+     "@testing-library/user-event": "^13.5.0",
+-    "html2canvas": "^1.4.1",
+-    "jspdf": "^3.0.1",
+     "react": "^19.1.0",
+     "react-dom": "^19.1.0",
+-    "react-multi-date-picker": "^4.5.2",
+     "react-scripts": "5.0.1",
+     "web-vitals": "^2.1.4"
+   },
+@@ -38,8 +35,5 @@
+       "last 1 firefox version",
+       "last 1 safari version"
+     ]
+-  },
+-  "devDependencies": {
+-    "tailwindcss": "^3.4.17"
+   }
+ }
+Index: package-lock.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/package-lock.json b/package-lock.json
+--- a/package-lock.json	
++++ b/package-lock.json	(date 1748450306769)
+@@ -12,16 +12,10 @@
+         "@testing-library/jest-dom": "^6.6.3",
+         "@testing-library/react": "^16.3.0",
+         "@testing-library/user-event": "^13.5.0",
+-        "html2canvas": "^1.4.1",
+-        "jspdf": "^3.0.1",
+         "react": "^19.1.0",
+         "react-dom": "^19.1.0",
+-        "react-multi-date-picker": "^4.5.2",
+         "react-scripts": "5.0.1",
+         "web-vitals": "^2.1.4"
+-      },
+-      "devDependencies": {
+-        "tailwindcss": "^3.4.17"
+       }
+     },
+     "node_modules/@adobe/css-tools": {
+@@ -3830,13 +3824,6 @@
+       "integrity": "sha512-eOunJqu0K1923aExK6y8p6fsihYEn/BYuQ4g0CxAAgFc4b/ZLN4CrsRZ55srTdqoiLzU2B2evC+apEIxprEzkQ==",
+       "license": "MIT"
+     },
+-    "node_modules/@types/raf": {
+-      "version": "3.4.3",
+-      "resolved": "https://registry.npmjs.org/@types/raf/-/raf-3.4.3.tgz",
+-      "integrity": "sha512-c4YAvMedbPZ5tEyxzQdMoOhhJ4RD3rngZIdwC2/qDN3d7JpEhB6fiBRKVY1lg5B7Wk+uPBjn5f39j1/2MY1oOw==",
+-      "license": "MIT",
+-      "optional": true
+-    },
+     "node_modules/@types/range-parser": {
+       "version": "1.2.7",
+       "resolved": "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.7.tgz",
+@@ -4846,18 +4833,6 @@
+         "node": ">= 4.0.0"
+       }
+     },
+-    "node_modules/atob": {
+-      "version": "2.1.2",
+-      "resolved": "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz",
+-      "integrity": "sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==",
+-      "license": "(MIT OR Apache-2.0)",
+-      "bin": {
+-        "atob": "bin/atob.js"
+-      },
+-      "engines": {
+-        "node": ">= 4.5.0"
+-      }
+-    },
+     "node_modules/autoprefixer": {
+       "version": "10.4.21",
+       "resolved": "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.21.tgz",
+@@ -5188,15 +5163,6 @@
+       "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==",
+       "license": "MIT"
+     },
+-    "node_modules/base64-arraybuffer": {
+-      "version": "1.0.2",
+-      "resolved": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz",
+-      "integrity": "sha512-I3yl4r9QB5ZRY3XuJVEPfc2XhZO6YweFPI+UovAzn+8/hb3oJ6lnysaFcjVpkCPfVWFUDvoZ8kmVDP7WyRtYtQ==",
+-      "license": "MIT",
+-      "engines": {
+-        "node": ">= 0.6.0"
+-      }
+-    },
+     "node_modules/batch": {
+       "version": "0.6.1",
+       "resolved": "https://registry.npmjs.org/batch/-/batch-0.6.1.tgz",
+@@ -5382,18 +5348,6 @@
+         "node-int64": "^0.4.0"
+       }
+     },
+-    "node_modules/btoa": {
+-      "version": "1.2.1",
+-      "resolved": "https://registry.npmjs.org/btoa/-/btoa-1.2.1.tgz",
+-      "integrity": "sha512-SB4/MIGlsiVkMcHmT+pSmIPoNDoHg+7cMzmt3Uxt628MTz2487DKSqK/fuhFBrkuqrYv5UCEnACpF4dTFNKc/g==",
+-      "license": "(MIT OR Apache-2.0)",
+-      "bin": {
+-        "btoa": "bin/btoa.js"
+-      },
+-      "engines": {
+-        "node": ">= 0.4.0"
+-      }
+-    },
+     "node_modules/buffer-from": {
+       "version": "1.1.2",
+       "resolved": "https://registry.npmjs.org/buffer-from/-/buffer-from-1.1.2.tgz",
+@@ -5540,26 +5494,6 @@
+       ],
+       "license": "CC-BY-4.0"
+     },
+-    "node_modules/canvg": {
+-      "version": "3.0.11",
+-      "resolved": "https://registry.npmjs.org/canvg/-/canvg-3.0.11.tgz",
+-      "integrity": "sha512-5ON+q7jCTgMp9cjpu4Jo6XbvfYwSB2Ow3kzHKfIyJfaCAOHLbdKPQqGKgfED/R5B+3TFFfe8pegYA+b423SRyA==",
+-      "license": "MIT",
+-      "optional": true,
+-      "dependencies": {
+-        "@babel/runtime": "^7.12.5",
+-        "@types/raf": "^3.4.0",
+-        "core-js": "^3.8.3",
+-        "raf": "^3.4.1",
+-        "regenerator-runtime": "^0.13.7",
+-        "rgbcolor": "^1.0.1",
+-        "stackblur-canvas": "^2.0.0",
+-        "svg-pathdata": "^6.0.3"
+-      },
+-      "engines": {
+-        "node": ">=10.0.0"
+-      }
+-    },
+     "node_modules/case-sensitive-paths-webpack-plugin": {
+       "version": "2.4.0",
+       "resolved": "https://registry.npmjs.org/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz",
+@@ -6101,15 +6035,6 @@
+         "postcss": "^8.4"
+       }
+     },
+-    "node_modules/css-line-break": {
+-      "version": "2.1.0",
+-      "resolved": "https://registry.npmjs.org/css-line-break/-/css-line-break-2.1.0.tgz",
+-      "integrity": "sha512-FHcKFCZcAha3LwfVBhCQbW2nCNbkZXn7KVUJcsT5/P8YmfsVja0FMPJr0B903j/E69HUphKiV9iQArX8SDYA4w==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "utrie": "^1.0.2"
+-      }
+-    },
+     "node_modules/css-loader": {
+       "version": "6.11.0",
+       "resolved": "https://registry.npmjs.org/css-loader/-/css-loader-6.11.0.tgz",
+@@ -6826,16 +6751,6 @@
+         "url": "https://github.com/fb55/domhandler?sponsor=1"
+       }
+     },
+-    "node_modules/dompurify": {
+-      "version": "3.2.6",
+-      "resolved": "https://registry.npmjs.org/dompurify/-/dompurify-3.2.6.tgz",
+-      "integrity": "sha512-/2GogDQlohXPZe6D6NOgQvXLPSYBqIWMnZ8zzOhn09REE4eyAzb+Hed3jhoM9OkuaJ8P6ZGTTVWQKAi8ieIzfQ==",
+-      "license": "(MPL-2.0 OR Apache-2.0)",
+-      "optional": true,
+-      "optionalDependencies": {
+-        "@types/trusted-types": "^2.0.7"
+-      }
+-    },
+     "node_modules/domutils": {
+       "version": "2.8.0",
+       "resolved": "https://registry.npmjs.org/domutils/-/domutils-2.8.0.tgz",
+@@ -8090,12 +8005,6 @@
+         "bser": "2.1.1"
+       }
+     },
+-    "node_modules/fflate": {
+-      "version": "0.8.2",
+-      "resolved": "https://registry.npmjs.org/fflate/-/fflate-0.8.2.tgz",
+-      "integrity": "sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==",
+-      "license": "MIT"
+-    },
+     "node_modules/file-entry-cache": {
+       "version": "6.0.1",
+       "resolved": "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-6.0.1.tgz",
+@@ -9076,19 +8985,6 @@
+         }
+       }
+     },
+-    "node_modules/html2canvas": {
+-      "version": "1.4.1",
+-      "resolved": "https://registry.npmjs.org/html2canvas/-/html2canvas-1.4.1.tgz",
+-      "integrity": "sha512-fPU6BHNpsyIhr8yyMpTLLxAbkaK8ArIBcmZIRiBLiDhjeqvXolaEmDGmELFuX9I4xDcaKKcJl+TKZLqruBbmWA==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "css-line-break": "^2.1.0",
+-        "text-segmentation": "^1.0.3"
+-      },
+-      "engines": {
+-        "node": ">=8.0.0"
+-      }
+-    },
+     "node_modules/htmlparser2": {
+       "version": "6.1.0",
+       "resolved": "https://registry.npmjs.org/htmlparser2/-/htmlparser2-6.1.0.tgz",
+@@ -11104,24 +11000,6 @@
+         "node": ">=0.10.0"
+       }
+     },
+-    "node_modules/jspdf": {
+-      "version": "3.0.1",
+-      "resolved": "https://registry.npmjs.org/jspdf/-/jspdf-3.0.1.tgz",
+-      "integrity": "sha512-qaGIxqxetdoNnFQQXxTKUD9/Z7AloLaw94fFsOiJMxbfYdBbrBuhWmbzI8TVjrw7s3jBY1PFHofBKMV/wZPapg==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "@babel/runtime": "^7.26.7",
+-        "atob": "^2.1.2",
+-        "btoa": "^1.2.1",
+-        "fflate": "^0.8.1"
+-      },
+-      "optionalDependencies": {
+-        "canvg": "^3.0.11",
+-        "core-js": "^3.6.0",
+-        "dompurify": "^3.2.4",
+-        "html2canvas": "^1.0.0-rc.5"
+-      }
+-    },
+     "node_modules/jsx-ast-utils": {
+       "version": "3.3.5",
+       "resolved": "https://registry.npmjs.org/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz",
+@@ -13901,12 +13779,6 @@
+         "node": ">=14"
+       }
+     },
+-    "node_modules/react-date-object": {
+-      "version": "2.1.9",
+-      "resolved": "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.9.tgz",
+-      "integrity": "sha512-BHxD/quWOTo9fLKV/cfL/M31ePoj4a1JaJ/CnOf8Ndg3mrkh4x9wEMMkCfTrzduxDOgU8ZgR8uarhqI5G71sTg==",
+-      "license": "MIT"
+-    },
+     "node_modules/react-dev-utils": {
+       "version": "12.0.1",
+       "resolved": "https://registry.npmjs.org/react-dev-utils/-/react-dev-utils-12.0.1.tgz",
+@@ -14024,16 +13896,6 @@
+         "react": "^19.1.0"
+       }
+     },
+-    "node_modules/react-element-popper": {
+-      "version": "2.1.7",
+-      "resolved": "https://registry.npmjs.org/react-element-popper/-/react-element-popper-2.1.7.tgz",
+-      "integrity": "sha512-tuM2OxKlW32h+6uFSK6EENHPeZ2OGgOipHfOAl+VLWEv9/j3QkSGbD+ADX3A9uJlmq24i37n28RjJmAbGTfpEg==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "react": ">=16.8.0",
+-        "react-dom": ">=16.8.0"
+-      }
+-    },
+     "node_modules/react-error-overlay": {
+       "version": "6.1.0",
+       "resolved": "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.1.0.tgz",
+@@ -14046,20 +13908,6 @@
+       "integrity": "sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==",
+       "license": "MIT"
+     },
+-    "node_modules/react-multi-date-picker": {
+-      "version": "4.5.2",
+-      "resolved": "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-4.5.2.tgz",
+-      "integrity": "sha512-FgWjZB3Z6IA6XpcWiLPk85PwcRUhOiYhKK42o5k672gD/n2I6rzPfQ8bUrldOIiF/Z7FfOCdH7a6FeubzqteLg==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "react-date-object": "^2.1.8",
+-        "react-element-popper": "^2.1.6"
+-      },
+-      "peerDependencies": {
+-        "react": ">=16.8.0",
+-        "react-dom": ">=16.8.0"
+-      }
+-    },
+     "node_modules/react-refresh": {
+       "version": "0.11.0",
+       "resolved": "https://registry.npmjs.org/react-refresh/-/react-refresh-0.11.0.tgz",
+@@ -14502,16 +14350,6 @@
+         "node": ">=0.10.0"
+       }
+     },
+-    "node_modules/rgbcolor": {
+-      "version": "1.0.1",
+-      "resolved": "https://registry.npmjs.org/rgbcolor/-/rgbcolor-1.0.1.tgz",
+-      "integrity": "sha512-9aZLIrhRaD97sgVhtJOW6ckOEh6/GnvQtdVNfdZ6s67+3/XwLS9lBcQYzEEhYVeUowN7pRzMLsyGhK2i/xvWbw==",
+-      "license": "MIT OR SEE LICENSE IN FEEL-FREE.md",
+-      "optional": true,
+-      "engines": {
+-        "node": ">= 0.8.15"
+-      }
+-    },
+     "node_modules/rimraf": {
+       "version": "3.0.2",
+       "resolved": "https://registry.npmjs.org/rimraf/-/rimraf-3.0.2.tgz",
+@@ -15309,16 +15147,6 @@
+         "node": ">=8"
+       }
+     },
+-    "node_modules/stackblur-canvas": {
+-      "version": "2.7.0",
+-      "resolved": "https://registry.npmjs.org/stackblur-canvas/-/stackblur-canvas-2.7.0.tgz",
+-      "integrity": "sha512-yf7OENo23AGJhBriGx0QivY5JP6Y1HbrrDI6WLt6C5auYZXlQrheoY8hD4ibekFKz1HOfE48Ww8kMWMnJD/zcQ==",
+-      "license": "MIT",
+-      "optional": true,
+-      "engines": {
+-        "node": ">=0.1.14"
+-      }
+-    },
+     "node_modules/stackframe": {
+       "version": "1.3.4",
+       "resolved": "https://registry.npmjs.org/stackframe/-/stackframe-1.3.4.tgz",
+@@ -15850,16 +15678,6 @@
+       "integrity": "sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==",
+       "license": "MIT"
+     },
+-    "node_modules/svg-pathdata": {
+-      "version": "6.0.3",
+-      "resolved": "https://registry.npmjs.org/svg-pathdata/-/svg-pathdata-6.0.3.tgz",
+-      "integrity": "sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==",
+-      "license": "MIT",
+-      "optional": true,
+-      "engines": {
+-        "node": ">=12.0.0"
+-      }
+-    },
+     "node_modules/svgo": {
+       "version": "1.3.2",
+       "resolved": "https://registry.npmjs.org/svgo/-/svgo-1.3.2.tgz",
+@@ -16209,15 +16027,6 @@
+         "node": ">=8"
+       }
+     },
+-    "node_modules/text-segmentation": {
+-      "version": "1.0.3",
+-      "resolved": "https://registry.npmjs.org/text-segmentation/-/text-segmentation-1.0.3.tgz",
+-      "integrity": "sha512-iOiPUo/BGnZ6+54OsWxZidGCsdU8YbE4PSpdPinp7DeMtUJNJBoJ/ouUSTJjHkh1KntHaltHl/gDs2FC4i5+Nw==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "utrie": "^1.0.2"
+-      }
+-    },
+     "node_modules/text-table": {
+       "version": "0.2.0",
+       "resolved": "https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz",
+@@ -16736,15 +16545,6 @@
+         "node": ">= 0.4.0"
+       }
+     },
+-    "node_modules/utrie": {
+-      "version": "1.0.2",
+-      "resolved": "https://registry.npmjs.org/utrie/-/utrie-1.0.2.tgz",
+-      "integrity": "sha512-1MLa5ouZiOmQzUbjbu9VmjLzn1QLXBhwpUa7kdLUQK+KQ5KA9I1vk5U4YHe/X2Ch7PYnJfWuWT+VbuxbGwljhw==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "base64-arraybuffer": "^1.0.2"
+-      }
+-    },
+     "node_modules/uuid": {
+       "version": "8.3.2",
+       "resolved": "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz",
+diff --git a/public/logo192.png b/public/logo192.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..fc44b0a3796c0e0a64c3d858ca038bd4570465d9
+GIT binary patch
+literal 5347
+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
+Pe?m!4RklXjEckx_dw)}T
+
+diff --git a/public/logo512.png b/public/logo512.png
+new file mode 100644
+index 0000000000000000000000000000000000000000..a4e47a6545bc15971f8f63fba70e4013df88a664
+GIT binary patch
+literal 9664
+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
+bpRk3}iy1oGPCZ}$H<A{Y7yBt<82JAI|B6mN
+
