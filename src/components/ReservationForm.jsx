@@ -123,7 +123,7 @@ export default function ReservationForm() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
             <div className="w-full max-w-4xl">
-                <div className="flex justify-center gap-4 mb-4">
+                <div className="flex justify-center gap-4 mb-4 exportbtns" >
 
                     <button
 
@@ -138,13 +138,11 @@ export default function ReservationForm() {
                     >
                         ذخیره به صورت PDF
                     </button>
-
                 </div>
 
                 <div
                     ref={formRef}
-                    className="bg-white p-8 rounded-lg shadow-md mx-auto text-black"
-                    style={{ width: "800px" }} >
+                    className="bg-white p-8 rounded-lg shadow-md mx-auto text-black">
                     <div className="grid grid-cols-3 gap-4 text-center con1">
 
                         <div className="grid grid-rows-[40px_40px_40px_40px] gap-1 justify-items-center">
@@ -179,8 +177,6 @@ export default function ReservationForm() {
                                 </span>
                             </div>
                         </div>
-
-
                     </div>
 
                     <div className="border-t border-gray-300 py-4 text-right ">
@@ -274,7 +270,7 @@ export default function ReservationForm() {
                                 </div>
                             </div>
                             <div className=" items-center justify-center">
-                                <div className="grid grid-rows-2 items-center gap-2 ">
+                                <div className="grid grid-rows-2 items-center gap-2 justify-items-center">
                                     <label className="whitespace-nowrap">پرداختی مهمان:</label>
                                     {maybeInput(guestPayment, setGuestPayment)}
                                 </div>
@@ -302,7 +298,6 @@ export default function ReservationForm() {
                                     <textarea className="input pt-2 min-h-[60px]" rows="3" />
                                 </div>
                             </div>
-
                     </div>
                     <div className=" border-t border-gray-300 py-4 text-right mb-1">
 
@@ -385,7 +380,6 @@ export default function ReservationForm() {
                                 <p> شماره تماس :</p>
                                 <p>05191690169</p>
                             </div>
-
                         </div>
                     </div>
                 </div>

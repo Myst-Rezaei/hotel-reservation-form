@@ -48,7 +48,9 @@
   .justify-items-end {
     justify-items: center !important;
   }
-
+.exportbtns {
+  justify-self: center;
+}
   .text-right {
     text-align: center !important;
   }
